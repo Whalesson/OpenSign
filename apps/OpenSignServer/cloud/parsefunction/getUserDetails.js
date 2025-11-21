@@ -23,10 +23,11 @@ async function getUserDetails(request) {
       userQuery.include('UserId');
       userQuery.include('CreatedBy');
       console.log('Includes added');
-      userQuery.exclude('CreatedBy.authData');
-      userQuery.exclude('TenantId.FileAdapters');
-      userQuery.exclude('google_refresh_token');
-      userQuery.exclude('TenantId.PfxFile');
+      // Temporarily commented out to debug
+      // userQuery.exclude('CreatedBy.authData');
+      // userQuery.exclude('TenantId.FileAdapters');
+      // userQuery.exclude('google_refresh_token');
+      // userQuery.exclude('TenantId.PfxFile');
       if (userId) {
         userQuery.equalTo('CreatedBy', { __type: 'Pointer', className: '_User', objectId: userId });
       }
