@@ -31,7 +31,10 @@ async function getUserDetails(request) {
         return '';
       }
     } catch (err) {
-      console.log('Err ', err);
+      console.log('Err in getUserDetails:', err);
+      console.log('Error code:', err?.code);
+      console.log('Error message:', err?.message);
+      console.log('Error stack:', err?.stack);
       const code = err?.code || 400;
       const msg = err?.message || 'Something went wrong.';
       throw new Parse.Error(code, msg);
