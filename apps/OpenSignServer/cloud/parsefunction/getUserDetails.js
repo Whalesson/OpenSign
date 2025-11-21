@@ -1,18 +1,28 @@
 async function getUserDetails(request) {
+  console.log('getUserDetails called');
   const reqEmail = request.params.email;
+  console.log('reqEmail:', reqEmail);
+  console.log('request.user:', request.user?.get('email'));
   if (reqEmail || request.user) {
     try {
+      console.log('Inside try block');
       const userId = request.params.userId;
+      console.log('userId:', userId);
       const userQuery = new Parse.Query('contracts_Users');
+      console.log('Query created');
       if (reqEmail) {
+        console.log('Using reqEmail:', reqEmail);
         userQuery.equalTo('Email', reqEmail);
       } else {
         const email = request.user.get('email');
+        console.log('Using user email:', email);
         userQuery.equalTo('Email', email);
       }
+      console.log('Adding includes...');
       userQuery.include('TenantId');
       userQuery.include('UserId');
       userQuery.include('CreatedBy');
+      console.log('Includes added');
       userQuery.exclude('CreatedBy.authData');
       userQuery.exclude('TenantId.FileAdapters');
       userQuery.exclude('google_refresh_token');
@@ -20,7 +30,9 @@ async function getUserDetails(request) {
       if (userId) {
         userQuery.equalTo('CreatedBy', { __type: 'Pointer', className: '_User', objectId: userId });
       }
+      console.log('Executing query...');
       const res = await userQuery.first({ useMasterKey: true });
+      console.log('Query result:', res);
       if (res) {
         if (reqEmail) {
           return { objectId: res.id };
