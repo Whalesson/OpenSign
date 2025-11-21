@@ -2,11 +2,11 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-# Copiar package.json e package-lock.json da pasta apps/OpenSign
-COPY apps/OpenSign/package*.json ./
+# Copiar package.json
+COPY apps/OpenSign/package.json ./
 
-# Instalar dependências
-RUN npm ci
+# Instalar dependências (sem lock file)
+RUN npm install
 
 # Copiar código-fonte
 COPY apps/OpenSign/ .
